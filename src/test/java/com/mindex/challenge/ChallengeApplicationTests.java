@@ -32,13 +32,10 @@ public class ChallengeApplicationTests {
 
 	@Test
 	public void calcNumberOfReportsTest() {
-		ReportingStructure reporting = new ReportingStructure();
+		Employee employee = employeeRepository.findByEmployeeId("16a596ae-edd3-4847-99fe-c4518e82c86f");
+		ReportingStructure reporting = new ReportingStructure(employee);
 		// LOG.debug(reporting.getEmployee().getFirstName());
 		
-		Employee employee = employeeRepository.findByEmployeeId("16a596ae-edd3-4847-99fe-c4518e82c86f");
-		System.out.println(employee.getDirectReports().get(0).getFirstName());
-		System.out.println(employeeRepository.findByEmployeeId("03aa1462-ffa9-4978-901b-7c001562cf6f").getDirectReports().get(0).getFirstName());
-		System.out.println(employeeRepository.findByEmployeeId("03aa1462-ffa9-4978-901b-7c001562cf6f").getDirectReports().get(1).getFirstName());
 		reporting.setEmployee(employee);
 		Assertions.assertEquals(4, reporting.getNumberOfReports());
 	}

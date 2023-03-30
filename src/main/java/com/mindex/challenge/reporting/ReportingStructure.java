@@ -11,9 +11,15 @@ public class ReportingStructure {
 	private static final Logger LOG = LoggerFactory.getLogger(ReportingStructure.class);
 	private int numberOfReports;
 	private Employee employee;
-
-	public int getNumberOfReports() {
+	public ReportingStructure(Employee employee) {
+		this.employee = employee;
 		this.numberOfReports = calculateNumOfReports(this.employee);
+	}
+	public int getNumberOfReports() {
+		return this.numberOfReports;
+	}
+	public int updateNumberOfReports() {
+		numberOfReports = calculateNumOfReports(this.employee);
 		return this.numberOfReports;
 	}
 
@@ -28,6 +34,7 @@ public class ReportingStructure {
 		//loop through direct reporters of this employee if any 
 		if(reporter.getDirectReports() != null) {
 			for(Employee reportee : reporter.getDirectReports()) { 
+				LOG.debug(reportee.getFirstName());
 				//add direct reporter counts of subordinates 
 				count +=  calculateNumOfReports(reportee);
 			}
