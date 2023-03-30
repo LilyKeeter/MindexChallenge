@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
 
 @Component
 public class DataBootstrap {
@@ -31,8 +34,24 @@ public class DataBootstrap {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
+        //instantiate a hashmap for easy retrieval 
+        HashMap<String, Employee> employeeHashMap = new HashMap<String, Employee>();
         for (Employee employee : employees) {
+        	
+        	employeeHashMap.put(employee.getEmployeeId(), employee);
+        }
+        //since the directReports were originally instantiated to be mostly null with only strings due to object mapping
+        //Loop through and replace them with their actual object equivalent. 
+        for (Employee employee : employees) {
+        	if(employee.getDirectReports() != null) {
+				List<Employee> directReports = new ArrayList<Employee>();
+        		for(Employee directReporter : employee.getDirectReports()) {
+        			directReports.add(employeeHashMap.get(directReporter.getEmployeeId()));
+
+        		}
+        		employee.setDirectReports(directReports);
+
+        	}
             employeeRepository.insert(employee);
         }
     }
